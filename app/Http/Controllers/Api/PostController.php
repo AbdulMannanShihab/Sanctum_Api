@@ -62,4 +62,54 @@ class PostController extends Controller
             'post' => $post
         ], 200);
     }
+
+    public function update(Request $request, string $id){
+
+        $validateUser = Validator::make(
+            $request->all(),
+            [
+                'title' => 'required',
+                'description' => 'required',
+                'image' => 'nullable|image|mimes:png,jpg'
+            ]
+        );
+
+        if($validateUser->fails()){
+            return response()->json([
+                'status' => false,
+                'message' => 'Validation Error',
+                'errors' => $validateUser->errors()->all()
+            ], 401);
+        }
+
+        $post = Post::select('id', 'image')->where('id', $id)->first();
+
+        if($request->image != ''){
+            $path = public_path().'/images';
+            if($post->image != '' && $post->image != null){
+                $oldFile = $path.'/'.$post->image;
+                if(file_exists($oldFile)){
+                    unlink($oldFile);
+                }
+            }
+            $img = $request->image;
+            $ext = $img->getClientOriginalExtension();
+            $imageName = time().'.'.$ext;
+            $img->move(public_path('images'), $imageName);
+        }else{
+            $imageName = $post->image;
+        }
+
+        $postUpdate = Post::find($id)->update([
+            'title' => $request->title,
+            'description' => $request->description,
+            'image' => $imageName,
+        ]);
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Post Updated Successfully',
+            'post' => $postUpdate
+        ], 200);
+    }
 }
