@@ -53,5 +53,13 @@ class PostController extends Controller
             'post' => $post
         ], 200);
     }
-    
+
+    public function show(string $id){
+        $post = Post::find($id);
+        return response()->json([
+            'status' => true,
+            'message' => 'Single Post',
+            'post' => $post
+        ], 200);
+    }
 }
