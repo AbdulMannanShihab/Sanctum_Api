@@ -17,3 +17,4 @@
 ## API Route
 
     Signup : http://localhost:8000/api/signup
+    Login  : http://localhost:8000/api/login

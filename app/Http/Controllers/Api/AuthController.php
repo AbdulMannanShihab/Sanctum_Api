@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
 {
-     public function signup(Request $request){
+    public function signup(Request $request){
         $validateUser = Validator::make(
             $request->all(),
             [
@@ -38,5 +38,38 @@ class AuthController extends Controller
             'message' => 'User Created Successfully',
             'user' => $user
         ], 200);
+    }
+
+    public function login(Request $request){
+        $validateUser = Validator::make(
+            $request->all(),
+            [
+                'email' => 'required|email',
+                'password' => 'required'
+            ]
+        );
+
+        if($validateUser->fails()){
+            return response()->json([
+                'status' => false,
+                'message' => 'Authentication Fail',
+                'errors' => $validateUser->errors()->all()
+            ], 404);
+        }
+
+        if(auth()->attempt(['email' => $request->email, 'password' => $request->password])){
+            $authUser = auth()->user();
+            return response()->json([
+                'status' => true,
+                'message' => 'User Logged in successfully',
+                'token' => $authUser->createToken("API Token")->plainTextToken,
+                'token_type' => 'bearer'
+            ], 200);
+        }else{
+            return response()->json([
+                'status' => false,
+                'message' => 'Email and password does not matched.',
+            ], 401);
+        }
     }
 }
