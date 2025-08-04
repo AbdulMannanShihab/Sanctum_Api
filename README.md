@@ -3,4 +3,8 @@
 
 ## Install Laravel
 
-laravel new Sanctum-Api
+    laravel new Sanctum-Api
+
+## Install Sanctum
+
+    php artisan install:api
