@@ -18,3 +18,7 @@
 
     Signup : http://localhost:8000/api/signup
     Login  : http://localhost:8000/api/login
+
+## Logout 
+
+    http://localhost:8000/api/logout
