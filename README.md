@@ -22,3 +22,8 @@
 ## Logout 
 
     http://localhost:8000/api/logout
+
+## Make Post Model Controller
+
+    php artisan make:model Post -m
+    php artisan make:controller Api/PostController
