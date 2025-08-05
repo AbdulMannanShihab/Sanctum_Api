@@ -5,3 +5,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::view('login', 'login')->name('login');
+Route::view('allposts', 'allposts');
+Route::view('addPost', 'addPost');
